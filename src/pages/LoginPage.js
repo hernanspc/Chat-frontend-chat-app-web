@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 const LoginPage = () => {
     return (
-        <form classNameName="login100-form validate-form flex-sb flex-w">
-            <span classNameName="login100-form-title mb-3">
+        <form className="login100-form validate-form flex-sb flex-w">
+            <span className="login100-form-title mb-3">
                 Chat - Ingreso
             </span>
 

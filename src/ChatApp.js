@@ -5,5 +5,4 @@ const ChatApp = () => {
         <div>ChatApp</div>
     )
 }
-
 export default ChatApp

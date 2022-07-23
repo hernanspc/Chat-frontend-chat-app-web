@@ -1,13 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { AuthContext } from '../auth/AuthContext'
 
 const LoginPage = () => {
 
+    const { login } = useContext(AuthContext)
+
     const [form, setForm] = useState({
-        email: 'test1@test.com',
-        password: '123456',
+        email: '',
+        password: '',
         rememberme: true
     })
+
+    useEffect(() => {
+        const email = localStorage.getItem('email')
+        if (email) {
+            setForm({
+                ...form,
+                email,
+                rememberme: true,
+            })
+        }
+    }, [])
+
 
     const onChange = ({ target }) => {
         const { name, value } = target;
@@ -29,7 +44,13 @@ const LoginPage = () => {
     const onSubmit = (ev) => {
         ev.preventDefault();
 
-        console.log('form ', form)
+        (form.rememberme)
+            ? localStorage.setItem('email', form.email)
+            : localStorage.removeItem('email');
+
+        const { email, password } = form;
+        login(email, password);
+
     }
 
 
@@ -60,8 +81,8 @@ const LoginPage = () => {
                     type="password"
                     name="password"
                     placeholder="Password"
-                    checked={form.password}
-                    readOnly
+                    value={form.password}
+                    onChange={onChange}
                 />
                 <span className="focus-input100"></span>
             </div>

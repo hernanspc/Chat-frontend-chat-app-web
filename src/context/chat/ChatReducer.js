@@ -1,7 +1,7 @@
 import { types } from "../../types/types";
 
 export const chatReducer = (state, action) => {
-    console.log('action ', action)
+
     switch (action.type) {
 
         case types.usuariosCargados:

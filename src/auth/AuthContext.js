@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }) => {
                 name: usuario.nombre,
                 email: usuario.email,
             })
+            console.log('Autenticado!')
         }
 
         // console.log(resp)

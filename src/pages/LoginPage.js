@@ -57,6 +57,9 @@ const LoginPage = () => {
         }
     }
 
+    const todoOk = () => {
+        return (form.email.length > 0 && form.password.length > 0) ? true : false;
+    }
 
     return (
         <form className="login100-form validate-form flex-sb flex-w"
@@ -117,7 +120,10 @@ const LoginPage = () => {
             </div>
 
             <div className="container-login100-form-btn m-t-17">
-                <button className="login100-form-btn">
+                <button
+                    className="login100-form-btn"
+                    disabled={!todoOk()}
+                >
                     Ingresar
                 </button>
             </div>

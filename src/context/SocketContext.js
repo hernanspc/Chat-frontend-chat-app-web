@@ -39,6 +39,16 @@ export const SocketProvider = ({ children }) => {
         })
     }, [socket, dispatch])
 
+    useEffect(() => {
+        socket?.on('mensaje-personal', (mensaje) => {
+            console.log('mensaje ', mensaje)
+
+            //TODO: Dispatch de una acción
+
+            //TODO: Mover el scroll al final
+        })
+    }, [socket])
+
 
     return (
         <SocketContext.Provider value={{ socket, online }}>

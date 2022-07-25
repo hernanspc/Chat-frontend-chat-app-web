@@ -13,33 +13,35 @@ export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
 
-    const { socket, online, conectarSocket, desconectarSocket } = useSocket('http://localhost:8080');
-    const { auth } = useContext( AuthContext );
-    const { dispatch } = useContext( ChatContext );
+    // const { socket, online, conectarSocket, desconectarSocket } = useSocket('http://localhost:8080');
+    const { socket, online, conectarSocket, desconectarSocket } = useSocket('https://react-socket-chat-hpormachi.herokuapp.com');
+
+    const { auth } = useContext(AuthContext);
+    const { dispatch } = useContext(ChatContext);
 
     useEffect(() => {
-        if ( auth.logged ) {
+        if (auth.logged) {
             conectarSocket();
         }
-    }, [ auth, conectarSocket ]);
+    }, [auth, conectarSocket]);
 
     useEffect(() => {
-        if ( !auth.logged ) {
+        if (!auth.logged) {
             desconectarSocket();
         }
-    }, [ auth, desconectarSocket ]);
+    }, [auth, desconectarSocket]);
 
     // Escuchar los cambios en los usuarios conectados
     useEffect(() => {
-        
-        socket?.on( 'lista-usuarios', (usuarios) => {
+
+        socket?.on('lista-usuarios', (usuarios) => {
             dispatch({
                 type: types.usuariosCargados,
                 payload: usuarios
             });
         })
 
-    }, [ socket, dispatch ]);
+    }, [socket, dispatch]);
 
 
     useEffect(() => {
@@ -52,12 +54,12 @@ export const SocketProvider = ({ children }) => {
             scrollToBottomAnimated('mensajes');
         })
 
-    }, [ socket, dispatch ]);
+    }, [socket, dispatch]);
 
 
     return (
         <SocketContext.Provider value={{ socket, online }}>
-            { children }
+            {children}
         </SocketContext.Provider>
     )
 }

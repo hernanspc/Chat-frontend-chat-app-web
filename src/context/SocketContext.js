@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import { createContext } from 'react';
 
-import { types } from '../types/types';
 import { AuthContext } from '../auth/AuthContext';
 import { ChatContext } from './chat/ChatContext';
 import { useSocket } from '../hooks/useSocket'
+
+import { types } from '../types/types';
 import { scrollToBottomAnimated } from '../helpers/scrollToBottom';
 
 export const SocketContext = createContext();
@@ -13,49 +14,50 @@ export const SocketContext = createContext();
 export const SocketProvider = ({ children }) => {
 
     const { socket, online, conectarSocket, desconectarSocket } = useSocket('http://localhost:8080');
-    const { auth } = useContext(AuthContext)
-    const { dispatch } = useContext(ChatContext)
+    const { auth } = useContext( AuthContext );
+    const { dispatch } = useContext( ChatContext );
 
     useEffect(() => {
-        if (auth.logged) {
+        if ( auth.logged ) {
             conectarSocket();
         }
-
-    }, [auth, conectarSocket])
+    }, [ auth, conectarSocket ]);
 
     useEffect(() => {
-        if (!auth.logged) {
+        if ( !auth.logged ) {
             desconectarSocket();
         }
+    }, [ auth, desconectarSocket ]);
 
-    }, [auth, desconectarSocket])
-
-    //escuchar los usuarios conectados
+    // Escuchar los cambios en los usuarios conectados
     useEffect(() => {
-        socket?.on('lista-usuarios', (usuarios) => {
+        
+        socket?.on( 'lista-usuarios', (usuarios) => {
             dispatch({
                 type: types.usuariosCargados,
                 payload: usuarios
-            })
+            });
         })
-    }, [socket, dispatch])
+
+    }, [ socket, dispatch ]);
+
 
     useEffect(() => {
         socket?.on('mensaje-personal', (mensaje) => {
-
             dispatch({
                 type: types.nuevoMensaje,
                 payload: mensaje
-            })
+            });
 
-            scrollToBottomAnimated('mensajes')
+            scrollToBottomAnimated('mensajes');
         })
-    }, [socket, dispatch])
+
+    }, [ socket, dispatch ]);
 
 
     return (
         <SocketContext.Provider value={{ socket, online }}>
-            {children}
+            { children }
         </SocketContext.Provider>
     )
 }

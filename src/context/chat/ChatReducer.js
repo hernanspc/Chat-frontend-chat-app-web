@@ -1,20 +1,25 @@
-import { types } from "../../types/types";
+import { types } from '../../types/types';
 
-export const chatReducer = (state, action) => {
+// const initialState = {
+//     uid: '',
+//     chatActivo: null, // UID del usuario al que yo quiero enviar mensajes
+//     usuarios: [], // Todos los usuarios de la base datos
+//     mensajes: [], // El chat seleccionado
+// }
 
-    switch (action.type) {
+export const chatReducer = ( state, action ) => {
 
+
+    switch ( action.type ) {
+        
         case types.usuariosCargados:
             return {
                 ...state,
-                usuarios: [...action.payload]
+                usuarios: [ ...action.payload ]
             }
-
+        
         case types.activarChat:
-
-            if (state.chatActivo === action.payload) {
-                return state;
-            }
+            if ( state.chatActivo === action.payload ) return state;
 
             return {
                 ...state,
@@ -22,13 +27,14 @@ export const chatReducer = (state, action) => {
                 mensajes: []
             }
 
+
         case types.nuevoMensaje:
-            if (state.chatActivo === action.payload.de
-                || state.chatActivo === action.payload.para
+            if ( state.chatActivo === action.payload.de || 
+                 state.chatActivo === action.payload.para   
             ) {
                 return {
                     ...state,
-                    mensajes: [...state.mensajes, action.payload]
+                    mensajes: [ ...state.mensajes, action.payload ]
                 }
             } else {
                 return state;
@@ -37,10 +43,12 @@ export const chatReducer = (state, action) => {
         case types.cargarMensajes:
             return {
                 ...state,
-                mensajes: [...action.payload]
+                mensajes: [ ...action.payload ]
             }
-
+    
         default:
             return state;
     }
+
 }
+

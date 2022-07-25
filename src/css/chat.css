@@ -1,5 +1,4 @@
-html,
-body {
+html, body {
     height: 100vh;
     margin: 0;
 }
@@ -216,8 +215,7 @@ img {
     height: 150px;
 }
 
-.search-bar:focus,
-.write_msg:focus {
+.search-bar:focus, .write_msg:focus {
     outline: none;
 }
 

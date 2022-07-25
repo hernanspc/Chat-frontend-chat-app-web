@@ -1,17 +1,20 @@
-import { animateScroll } from "react-scroll"
+import { animateScroll } from 'react-scroll';
 
-export const scrollToBottom = (id) => {
 
+export const scrollToBottom = ( id ) => {
+    
     animateScroll.scrollToBottom({
         containerId: id,
         duration: 0
-    })
+    });
+
 }
 
-export const scrollToBottomAnimated = (id) => {
-
+export const scrollToBottomAnimated = ( id ) => {
+    
     animateScroll.scrollToBottom({
         containerId: id,
         duration: 250
-    })
+    });
+
 }

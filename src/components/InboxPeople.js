@@ -1,14 +1,15 @@
-import React from 'react'
-import SearchBox from './SearchBox'
-import Sidebar from './Sidebar'
+import React from 'react';
+import { Searchbox } from './Searchbox';
+import { Sidebar } from './Sidebar';
 
-const InboxPeople = () => {
+export const InboxPeople = () => {
     return (
-        <div className="inbox_people" >
-            <SearchBox />
+        <div className="inbox_people">
+
+            <Searchbox />
+
             <Sidebar />
-        </div >
+
+        </div>
     )
 }
-
-export default InboxPeople

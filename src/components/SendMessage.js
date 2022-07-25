@@ -1,52 +1,55 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react';
+
 import { AuthContext } from '../auth/AuthContext';
 import { ChatContext } from '../context/chat/ChatContext';
-import { SocketContext } from '../context/SocketContext'
+import { SocketContext } from '../context/SocketContext';
 
-const SendMessage = () => {
-    const [mensaje, setMensaje] = useState('');
-    const { socket } = useContext(SocketContext)
-    const { auth } = useContext(AuthContext)
-    const { chatState } = useContext(ChatContext)
+export const SendMessage = () => {
+
+    const [ mensaje, setMensaje ] = useState('');
+
+    const { socket } = useContext( SocketContext );
+    const { auth } = useContext( AuthContext );
+    const { chatState } = useContext( ChatContext );
+
 
     const onChange = ({ target }) => {
-        setMensaje(target.value);
+        setMensaje( target.value );
     }
+
 
     const onSubmit = (ev) => {
         ev.preventDefault();
 
-        if (mensaje.length === 0) { return; }
+        if ( mensaje.length === 0 ){ return; }
         setMensaje('');
 
-        //TODO: Emitir un evento de sockets para enviar el mensaje
+        // TODO: Emitir un evento de sockets para enviar el mensaje
         // {
-        //     de: //UID del usuario enviando el mensaje
-        //     para: //UID del usuario recibe el mensaje
-        //     mensaje: // Lo que quiero enviar
+        //     de: // UID del usuario enviando el mensaje
+        //     para: // UID del usuario que recibe el mensaje
+        //     mensaje: // lo que quiero enviar
         // }
-        socket.emit('mensaje-personal', {
-            de: auth?.uid,
+        socket.emit( 'mensaje-personal', {
+            de: auth.uid,
             para: chatState.chatActivo,
             mensaje
         });
 
-        //TODO: Hacer dispatch de el mensaje...
-
-
+        // TODO: hacer el dispatch de el mensaje... 
 
     }
 
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={ onSubmit }>
             <div className="type_msg row">
                 <div className="input_msg_write col-sm-9">
                     <input
                         type="text"
                         className="write_msg"
                         placeholder="Mensaje..."
-                        value={mensaje}
-                        onChange={onChange}
+                        value={ mensaje }
+                        onChange={ onChange }
                     />
                 </div>
                 <div className="col-sm-3 text-center">
@@ -58,5 +61,3 @@ const SendMessage = () => {
         </form>
     )
 }
-
-export default SendMessage

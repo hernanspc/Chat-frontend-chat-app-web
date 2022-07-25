@@ -1,5 +1,5 @@
-import React, { createContext, useCallback, useState } from "react";
-import { fetchConToken, fetchSinToken } from '../helpers/fetch'
+import React, { createContext, useCallback, useState } from 'react';
+import { fetchConToken, fetchSinToken } from '../helpers/fetch';
 
 export const AuthContext = createContext();
 
@@ -14,34 +14,14 @@ const initialState = {
 
 export const AuthProvider = ({ children }) => {
 
-    const [auth, setAuth] = useState(initialState)
+    const [ auth, setAuth ] = useState(initialState)
 
-    const login = async (email, password) => {
+    const login = async( email, password ) => {
 
         const resp = await fetchSinToken('login', { email, password }, 'POST');
 
-        if (resp.ok) {
-            localStorage.setItem('token', resp.token);
-            const { usuario } = resp;
-
-            setAuth({
-                uid: usuario.uid,
-                checking: true,
-                logged: true,
-                name: usuario.nombre,
-                email: usuario.email,
-            })
-        }
-
-        return resp.ok;
-    }
-
-    const register = async (nombre, email, password) => {
-
-        const resp = await fetchSinToken('login/new', { nombre, email, password }, 'POST');
-
-        if (resp.ok) {
-            localStorage.setItem('token', resp.token);
+        if ( resp.ok ) {
+            localStorage.setItem('token', resp.token );
             const { usuario } = resp;
 
             setAuth({
@@ -50,19 +30,42 @@ export const AuthProvider = ({ children }) => {
                 logged: true,
                 name: usuario.nombre,
                 email: usuario.email,
-            })
-            console.log('Registrado!')
-            return true
+            });
+
         }
 
-        return resp.msg
+        return resp.ok;
+
     }
 
-    const verificaToken = useCallback(async () => {
+    const register = async(nombre, email, password) => {
+
+        const resp = await fetchSinToken('login/new', { nombre, email, password }, 'POST');
+        
+        if ( resp.ok ) {
+            localStorage.setItem('token', resp.token );
+            const { usuario } = resp;
+
+            setAuth({
+                uid: usuario.uid,
+                checking: false,
+                logged: true,
+                name: usuario.nombre,
+                email: usuario.email,
+            });
+
+            return true;
+        }
+
+        return resp.msg;
+
+    }
+
+    const verificaToken = useCallback( async() => {
 
         const token = localStorage.getItem('token');
-        //Si token no exist
-        if (!token) {
+        // Si token no existe
+        if ( !token ) {
             setAuth({
                 uid: null,
                 checking: false,
@@ -71,12 +74,12 @@ export const AuthProvider = ({ children }) => {
                 email: null,
             })
 
-            return false
+            return false;
         }
 
-        const resp = await fetchConToken('login/renew')
-        if (resp.ok) {
-            localStorage.setItem('token', resp.token);
+        const resp = await fetchConToken('login/renew');
+        if ( resp.ok ) {
+            localStorage.setItem('token', resp.token );
             const { usuario } = resp;
 
             setAuth({
@@ -85,7 +88,8 @@ export const AuthProvider = ({ children }) => {
                 logged: true,
                 name: usuario.nombre,
                 email: usuario.email,
-            })
+            });
+
             return true;
         } else {
             setAuth({
@@ -94,20 +98,21 @@ export const AuthProvider = ({ children }) => {
                 logged: false,
                 name: null,
                 email: null,
-            })
+            });
 
-            return false
+            return false;
         }
 
-    }, []);
+    }, [])
 
     const logout = () => {
-        localStorage.removeItem('token')
+        localStorage.removeItem('token');
         setAuth({
             checking: false,
             logged: false,
-        })
+        });
     }
+
 
     return (
         <AuthContext.Provider value={{
@@ -115,9 +120,9 @@ export const AuthProvider = ({ children }) => {
             login,
             register,
             verificaToken,
-            logout
+            logout,
         }}>
-            {children}
+            { children }
         </AuthContext.Provider>
     )
 }
